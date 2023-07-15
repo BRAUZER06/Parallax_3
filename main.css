@@ -1,0 +1,35 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --black: #141414;
+  --index: calc(1vw + 1vh);
+}
+
+@font-face {
+  font-family: arsenal_f sans-serif;
+  src: url(./assets/fonts/arsenal-regular.woff2);
+}
+
+.magic-list {
+  font-family: arsenal_f sans-serif;
+  font-size: calc(var(--index) * 2.75);
+  padding: calc(var(--index) * 2.75);
+}
+
+.magic-list__item {
+  /* cursor: none; */
+  color: var(---black);
+  text-decoration: none;
+  display: block;
+  initial-letter: 0.9;
+  padding: calc(var(--index) * 3) calc(var(--index) * 7.5);
+  border-bottom: 1px solid rgb(0 0 0 / 0.09);
+}
+
+.magic-list__header {
+  width: min-content;
+}
