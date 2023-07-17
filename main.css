@@ -6,7 +6,11 @@
 
 :root {
   --black: #141414;
-  --index: calc(1vw + 1vh);
+  --index: calc(
+    1vw + 1vh
+  ); /* index нужен для получения значении которое адаптируется под экран ( например для текста ) */
+
+  --transition: 1.25s cubic-bezier(0.2, 0.5, 0, 1);
 }
 
 @font-face {
@@ -28,8 +32,24 @@
   initial-letter: 0.9;
   padding: calc(var(--index) * 3) calc(var(--index) * 7.5);
   border-bottom: 1px solid rgb(0 0 0 / 0.09);
+  counter-increment: my-counter; /* естественный счетчик в css для нумерации  */
 }
 
 .magic-list__header {
-  width: min-content;
+  width: min-content; /* блок занимает максимальную ширину которая может быть(адаптируется под контент, текст внутри него  и на самое больше слово) */
+  transition: transform var(--transition);
+}
+
+.magic-list__item::before {
+  content: "(" counter(my-counter) ")"; /* есть такой  метод как counter(), в него мы вкладываем переменную my-counter, чтобы отобразить нумерацию  */
+  position: absolute;
+  font-size: calc(var(--index) * 0.95);
+  margin-left: calc(var(--index) * -2.25);
+  margin-top: calc(var(--index) / 2);
+  letter-spacing: 0.5px;
+  transition: transform var(--transition);
+}
+.magic-list__item:hover .magic-list__header,
+.magic-list__item:hover::before {
+  transform: translate3d(calc(var(--index) * -4), 0, 0);
 }
