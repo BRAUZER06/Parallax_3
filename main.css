@@ -11,6 +11,7 @@
   ); /* index нужен для получения значении которое адаптируется под экран ( например для текста ) */
 
   --transition: 1.25s cubic-bezier(0.2, 0.5, 0, 1);
+  --transition-cursor: 2s cubic-bezier(0.05, 0.5, 0, 1); /* вторая версия  */
 }
 
 @font-face {
@@ -25,19 +26,25 @@
 }
 
 .magic-list__item {
-  /* cursor: none; */
-  color: var(---black);
+  cursor: none;
+  color: var(--black);
   text-decoration: none;
   display: block;
-  initial-letter: 0.9;
+  line-height: 0.9;
   padding: calc(var(--index) * 3) calc(var(--index) * 7.5);
   border-bottom: 1px solid rgb(0 0 0 / 0.09);
   counter-increment: my-counter; /* естественный счетчик в css для нумерации  */
 }
 
+.magic-list__item:first-child {
+  /* декоративная линия  */
+  border-top: 1.5px solid var(---black);
+}
+
 .magic-list__header {
   width: min-content; /* блок занимает максимальную ширину которая может быть(адаптируется под контент, текст внутри него  и на самое больше слово) */
   transition: transform var(--transition);
+  will-change: transform; /* обеспечивает приоритет для анимации, на выделение дополнительного ресурса для корректного отображения  */
 }
 
 .magic-list__item::before {
@@ -48,8 +55,49 @@
   margin-top: calc(var(--index) / 2);
   letter-spacing: 0.5px;
   transition: transform var(--transition);
+  transition-delay: 0.025s;
+  will-change: transform; /* обеспечивает приоритет для анимации, на выделение дополнительного ресурса для корректного отображения  */
 }
 .magic-list__item:hover .magic-list__header,
 .magic-list__item:hover::before {
-  transform: translate3d(calc(var(--index) * -4), 0, 0);
+  transform: translate3d(calc(var(--index) * -5), 0, 0);
+}
+
+.cursor {
+  --width: calc(var(--index) * 22);
+  --height: calc(var(--index) * 14);
+  position: fixed;
+  width: var(--width);
+  height: 0; /*делаем изначально высоту 0 */
+  top: calc(var(--height) * -0.5);
+  left: calc(var(--width) * -0.5);
+  overflow: hidden;
+  transform: translate3d(var(--move-x), var(--move-y), 0);
+  transition: transform var(--transition-cursor), height 1s ease;
+  z-index: -1;
+  will-change: transform; /* обеспечивает приоритет для анимации, на выделение дополнительного ресурса для корректного отображения  */
+}
+
+.magic-list__item:hover .cursor {
+  height: var(--height);
+}
+.cursor__image {
+  --cursor-transform: translate3d(
+    calc(var(--move-x) / -5),
+    calc(var(--move-y) / -5),
+    0
+  );
+  position: relative;
+  width: calc(var(--width) * 2);
+  height: calc(var(--height) * 2);
+  top: calc(var(--height) * -0.4);
+  left: calc(var(--width) * -0.25);
+  background-size: cover;
+  background-position: center;
+  transform: var(--cursor-transform) scale(1.5);
+  transition: transform var(--transition-cursor); 
+}
+
+.magic-list__item:hover .cursor__image {
+  transform: var(--cursor-transform) scale(1);
 }
